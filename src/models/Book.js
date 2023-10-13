@@ -4,9 +4,10 @@ const Book = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     authors: { type: String, required: true },
-    favorite: { type: String },
-    fileCover: { type: String },
-    fileName: { type: String }
+    favorite: { type: Boolean, default: false },
+    fileCover: { type: String, required: true },
+    fileName: { type: String, required: true },
+    fileBook: { type: Array, required: true },
 })
 
 module.exports = model('Book', Book);

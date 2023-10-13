@@ -1,11 +1,14 @@
 const express = require('express');
-const app = express();
+/* const fileUpload = require('express-fileupload'); */
 const mongoose = require('mongoose');
 const { parsed: { PORT, MONGO_URL } } = require('dotenv').config();
+
+const app = express();
 const router = require('./src/routes');
 const port = PORT || 3000;
 
 app.use(express.json());
+/* app.use(fileUpload()) */
 app.use('/api', router);
 
 const start = async () => {
