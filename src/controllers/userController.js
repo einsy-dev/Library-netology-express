@@ -1,4 +1,4 @@
-class userController {
+class UserController {
     async login(req, res) {
         try {
             res.status(201).send({ id: 1, mail: "test@mail.ru" })
@@ -9,4 +9,4 @@ class userController {
     }
 }
 
-module.exports = new userController()
+module.exports = new UserController()

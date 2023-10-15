@@ -1,4 +1,4 @@
-const bookController = require('../controllers/bookController');
+const bookController = require('../../controllers/bookController');
 const multer = require('multer')
 const upload = multer()
 

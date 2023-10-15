@@ -33,7 +33,7 @@ async create(req, res) {
     try {
         const book = await new Book({ title, description, authors, favorite, fileCover, fileName });
 
-        const dirPath = path.resolve(__dirname, '..', `static/images/${book._id}`);
+        const dirPath = path.resolve(__dirname, '..', `public/images/${book._id}`);
         fs.mkdirSync(dirPath);
 
         const images = [];
@@ -79,7 +79,7 @@ async create(req, res) {
         try {
             const book = await Book.findById(id);
             const files = book.fileBook.map(el => ({
-                path: path.resolve(__dirname, '..', `static/images/${id}/${el}`),
+                path: path.resolve(__dirname, '..', `public/images/${id}/${el}`),
                 name: el
             }));
 
