@@ -51,7 +51,9 @@ class BookController {
 
             await newBook.set({ fileBook: book, fileCover: cover[0] });
             await newBook.save();
-            res.status(200).send({ message: 'Book created' });
+
+            const data = await Book.find().select('-__v');
+            res.render('index', { type: 'index', data: data });
 
         } catch (error) {
             console.error(error);
@@ -81,7 +83,9 @@ class BookController {
             }
 
             await Book.findByIdAndUpdate(id, { title, description, authors, favorite, fileName });
-            res.status(200).send({ message: 'Book updated' });
+
+            const data = await Book.find().select('-__v');
+            res.render('index', { type: 'index', data: data });
         } catch (error) {
             console.log(error)
         }
