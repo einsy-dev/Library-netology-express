@@ -10,19 +10,19 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
-<body class="container border">
+<body class="container">
 
-    <% if (type === 'view') { %>
+    <a class="btn btn-primary my-4" href="/">Home</a>
+
+    <% if (type==='view' ) { %>
         <%- include('./port/view.ejs') %>
-    <% } else if (type === 'create') { %>
-        <%- include('./port/create.ejs') %>
-    <% } else if (type === 'update') { %>
-        <%- include('./port/update.ejs') %>
-    <% } %>
-
-                               
-
-
+            <% } else if (type==='create' ) { %>
+                <%- include('./port/create.ejs') %>
+                    <% } else if (type==='update' ) { %>
+                        <%- include('./port/update.ejs') %>
+                            <% } else {%>
+                                <%- include('./port/index.ejs') %>
+                                    <% } %>
 </body>
 
 </html>

@@ -22,42 +22,65 @@ class BookController {
             console.log(error)
         }
     }
-async create(req, res) {
-    const { title, description, authors, favorite, fileCover, fileName } = req.body;
-    const files = req.files;
+    async create(req, res) {
+        const { title, description, authors, fileName } = req.body;
+        const { fileCover, fileBook } = req.files;
 
-    if (!title || !description || !authors || !fileCover || !fileName || !files) {
-        return res.status(400).send({ message: 'Please fill in all fields' });
+        if (!title || !description || !authors || !fileName || !fileCover || !fileBook) {
+            return res.status(400).send({ message: 'Please fill in all fields' });
+        }
+
+        function saveFile(array, dirPath) {
+            const images = [];
+            array.map(file => {
+                const fileName = uuid.v4() + ".jpg";
+                images.push(fileName);
+                fs.writeFileSync(path.join(dirPath, fileName), file.buffer);
+            });
+            return images;
+        }
+
+        try {
+            const newBook = await new Book({ title, description, authors, favorite: false, fileName });
+
+            const dirPath = path.resolve(__dirname, '../..', `public/images/${newBook._id}`);
+            fs.mkdirSync(dirPath);
+
+            const book = saveFile(fileBook, dirPath);
+            const cover = saveFile(fileCover, dirPath);
+
+            await newBook.set({ fileBook: book, fileCover: cover[0] });
+            await newBook.save();
+            res.status(200).send({ message: 'Book created' });
+
+        } catch (error) {
+            console.error(error);
+        }
     }
-
-    try {
-        const book = await new Book({ title, description, authors, favorite, fileCover, fileName });
-
-        const dirPath = path.resolve(__dirname, '..', `public/images/${book._id}`);
-        fs.mkdirSync(dirPath);
-
-        const images = [];
-
-        files.map(file => {
-            const fileName = uuid.v4() + ".jpg";
-            images.push(fileName);
-
-            fs.writeFileSync(path.join(dirPath, fileName), file.buffer);
-        });
-
-        await book.set({ fileBook: images });
-        await book.save();
-        res.status(200).send({ message: 'Book created' });
-
-    } catch (error) {
-        console.error(error);
-    }
-}
     async update(req, res) {
         const { id } = req.params
-        const { title, description, authors, favorite, fileCover, fileName } = req.body
+        const { title, description, authors, favorite, fileName, fileCover, fileBook } = req.body
+
+        if (!title || !description || !authors || !fileName) {
+            return res.status(400).send({ message: 'Please fill in all fields' });
+        }
+
         try {
-            await Book.findByIdAndUpdate(id, { title, description, authors, favorite, fileCover, fileName });
+            if (fileCover || fileBook) {
+                const dirPath = path.resolve(__dirname, '../..', `public/images/${id}`);
+
+                if (fileCover) {
+                    const cover = saveFile(fileCover, dirPath);
+                    await Book.findByIdAndUpdate(id, { fileCover: cover[0] });
+                }
+
+                if (fileBook) {
+                    const book = saveFile(fileBook, dirPath);
+                    await Book.findByIdAndUpdate(id, { fileBook: book });
+                }
+            }
+
+            await Book.findByIdAndUpdate(id, { title, description, authors, favorite, fileName });
             res.status(200).send({ message: 'Book updated' });
         } catch (error) {
             console.log(error)

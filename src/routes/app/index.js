@@ -2,7 +2,7 @@ const appController = require('../../controllers/appController');
 
 const router = require('express').Router();
 
-router.get('/', appController.main);
+router.get('/:type?/:id?', appController.main);
 
 module.exports = router;
 
