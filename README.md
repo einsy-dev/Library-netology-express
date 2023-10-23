@@ -1,4 +1,5 @@
-db.books.insertMany([
+db.books.insertMany(
+[
     {
         title: "string",
         description: "string",
@@ -11,7 +12,8 @@ db.books.insertMany([
         description: "string",
         authors: "string"
     }
-])
+]
+)
 
 db.books.find({title: "string"})
 
