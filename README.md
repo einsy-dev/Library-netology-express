@@ -1,4 +1,7 @@
-db.books.insertMany([
+Mongo DB 
+```
+db.books.insertMany(
+[
     {
         title: "string",
         description: "string",
@@ -11,10 +14,12 @@ db.books.insertMany([
         description: "string",
         authors: "string"
     }
-])
+]
+)
 
 db.books.find({title: "string"})
 
 db.books.findOneAndUpdate({"_id": "id"}, {"description": "string", "authors": "string"})
 
 // db.books.findByIdAndUpdate(_id,  {description: "string", authors: "string"}) - mongoose
+```
